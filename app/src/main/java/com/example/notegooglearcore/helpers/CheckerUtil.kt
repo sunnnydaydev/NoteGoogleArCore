@@ -1,8 +1,11 @@
 package com.example.notegooglearcore.helpers
 
 import android.app.Activity
+import android.content.Context
 import android.os.Handler
 import com.google.ar.core.ArCoreApk
+import com.google.ar.core.Frame
+import com.google.ar.core.ImageMetadata
 import timber.log.Timber
 import java.lang.Exception
 
@@ -13,11 +16,12 @@ object CheckerUtil {
     /**
      * 检测当前的设备是否支持ar
      * */
-     fun checkDeviceIsSupportForAR(activity:Activity): Boolean {
-        val availability = ArCoreApk.getInstance().checkAvailability(activity)
+     fun checkDeviceIsSupportForAR(applicationContext:Context): Boolean {
+        val availability = ArCoreApk.getInstance().checkAvailability(applicationContext)
+        Timber.d("availability:$availability")
         if (availability.isTransient) {
             Handler().postDelayed({
-                checkDeviceIsSupportForAR(activity)
+                checkDeviceIsSupportForAR(applicationContext)
             }, 200)
         }
         val result = availability.isSupported
@@ -47,5 +51,18 @@ object CheckerUtil {
             e.printStackTrace()
             Timber.d("update or download ar core failure. error msg:${e.message}")
         }
+    }
+
+    /**
+     * sensor exposure time
+     * notice:
+     * (1)constants ImageMetadata represents metaData
+     * (2) we can get ImageMetadata info from Frame which class defined in arcore lib.
+     * */
+    fun getSensorExposureTime(frame: Frame):Long?{
+         return kotlin.runCatching {
+             val metaDate = frame.imageMetadata
+             return metaDate.getLong(ImageMetadata.SENSOR_EXPOSURE_TIME)
+         }.getOrNull()
     }
 }

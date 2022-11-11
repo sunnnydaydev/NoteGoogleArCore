@@ -1,12 +1,15 @@
 package com.example.notegooglearcore
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.notegooglearcore.helpers.ARCoreSessionLifecycleHelper
 import com.example.notegooglearcore.helpers.CameraPermissionHelper
+import com.google.ar.core.CameraConfig
+import com.google.ar.core.CameraConfigFilter
 import com.google.ar.core.Session
 import timber.log.Timber
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -15,7 +18,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initArCoreSessionLifecycleHelper()
-
     }
 
 
@@ -30,8 +32,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun configSession(session: Session) {
         session.configure(session.config.apply {
-         // todo 进行配置
+
         })
+        // 设置相机
+        val filter = CameraConfigFilter(session)
+        //过滤出不使用深度的
+        filter.depthSensorUsage = EnumSet.of(CameraConfig.DepthSensorUsage.DO_NOT_USE)
+        //过滤出相机拍摄帧速率为30fps的
+        filter.targetFps = EnumSet.of(CameraConfig.TargetFps.TARGET_FPS_30)
+
+        // 选第零个元素，因为这个是最符合筛选条件的cameraConfig
+        val cameraConfig = session.getSupportedCameraConfigs(filter)[0]
+        session.cameraConfig = cameraConfig
     }
 
     /**
@@ -53,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                 "Camera permission is needed to run this application",
                 Toast.LENGTH_LONG
             ).show()
-            // 无权限&shouldShowRequestPermissionRationale为false则代表用户点击了"拒接不再询问"
+            // 为true 代表需要提醒用户，为false 代表不需要提示用户
             if (!CameraPermissionHelper.shouldShowRequestPermissionRationale(this)) {
                 CameraPermissionHelper.launchPermissionSetting(this)
             }
