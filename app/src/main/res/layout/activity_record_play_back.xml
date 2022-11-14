@@ -4,19 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".RecordPlayBackActivity">
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/init"
+        android:id="@+id/start"
         android:textAllCaps="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/init" />
+        android:text="start"/>
+
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/recordPlayBack"
+        android:id="@+id/stop"
         android:textAllCaps="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/record_play_back" />
+        android:text="stop"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/play"
+        android:textAllCaps="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="play"/>
+
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>

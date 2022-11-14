@@ -2,10 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.notegooglearcore">
-    <!-- Limits app visibility in the Google Play Store to ARCore supported devices
-     (https://developers.google.com/ar/devices). -->
+    <!--
+     Limits app visibility in the Google Play Store to ARCore supported devices
+     (https://developers.google.com/ar/devices).
+    -->
     <uses-feature android:name="android.hardware.camera.ar" />
+
     <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:name=".ArCoreApplication"
         android:allowBackup="true"
@@ -18,6 +22,12 @@
         android:theme="@style/Theme.NoteGoogleArCore"
         tools:targetApi="31">
         <activity
+            android:name=".InitActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RecordPlayBackActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -26,8 +36,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- "AR Required" app, requires "Google Play Services for AR" (ARCore)
-     to be installed, as the app does not include any non-AR features. -->
+        <!--
+ "AR Required" app, requires "Google Play Services for AR" (ARCore)
+     to be installed, as the app does not include any non-AR features.
+        -->
         <meta-data
             android:name="com.google.ar.core"
             android:value="required" />

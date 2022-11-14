@@ -14,7 +14,7 @@ import java.lang.Exception
  */
 object CheckerUtil {
     /**
-     * 检测当前的设备是否支持ar
+     * check is device support for ar
      * */
      fun checkDeviceIsSupportForAR(applicationContext:Context): Boolean {
         val availability = ArCoreApk.getInstance().checkAvailability(applicationContext)
@@ -29,11 +29,15 @@ object CheckerUtil {
         return result
     }
 
-     fun checkIsInstalledArGooglePlayService(activity:Activity){
+    /**
+     * check is install ar google play service.
+     * */
+     fun checkIsInstalledArGooglePlayService(activity:Activity)=
         try {
             when(ArCoreApk.getInstance().requestInstall(activity,true)){
                 ArCoreApk.InstallStatus.INSTALLED -> {
                     Timber.d("ArCoreApk.InstallStatus.INSTALLED")
+                    true
                 }
                 ArCoreApk.InstallStatus.INSTALL_REQUESTED -> {
                     // When this method returns `INSTALL_REQUESTED`:
@@ -45,13 +49,15 @@ object CheckerUtil {
                     //    requestInstall() will either return `INSTALLED` or throw an
                     //    exception if the installation or update did not succeed.
                     Timber.d("ArCoreApk.InstallStatus.INSTALL_REQUESTED")
+                    false
                 }
             }
         }catch (e: Exception){
             e.printStackTrace()
             Timber.d("update or download ar core failure. error msg:${e.message}")
+            false
         }
-    }
+
 
     /**
      * sensor exposure time
